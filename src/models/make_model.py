@@ -16,7 +16,7 @@ def format_data(articles, LABEL):
 
 
 def test_train_split(DATA, split=0.8):
-    """ Splits DATA into train and test according to split ratio  """
+    """Splits DATA into train and test according to split ratio"""
     random.shuffle(DATA)
     split_point = int(split * len(DATA))
     TRAIN_DATA = DATA[:split_point]
@@ -25,7 +25,7 @@ def test_train_split(DATA, split=0.8):
 
 
 def train_model(nlp, LABEL, TRAIN_DATA):
-    """ Trains models """
+    """Trains models"""
     print("Training Start !")
     ner = nlp.get_pipe("ner")
     ner.add_label(LABEL)
@@ -49,7 +49,7 @@ def train_model(nlp, LABEL, TRAIN_DATA):
 
 
 def save_model(nlp, output_dir):
-    """ Saves the trained model weights to output_dir"""
+    """Saves the trained model weights to output_dir"""
     nlp.to_disk(output_dir)
     print("Saved model to ", output_dir)
 
@@ -63,16 +63,17 @@ def test_model(nlp, TEST_DATA):
     print(f"{predicted:10} {orinigal}")
     negative_points = [t for t in TEST_DATA if not t[1]["entities"]]
     for data_point in negative_points:
-        text, entity = data_point
-        doc = nlp(text)
-        for ent in doc.ents:
-            print(f"{ent.text:10} {entity['entities']}")
+       text, entity = data_point
+       doc = nlp(text)
+       for ent in doc.ents:
+           print(f"{ent.text:10} {entity['entities']}")
     print("Compare Positive Data Points:")
     predicted = "Predicted"
     orinigal = "Original"
     print("-" * 50)
     print(f"{predicted:10} {orinigal}")
     positive_points = [t for t in TEST_DATA if t[1]["entities"]]
+    print(negative_points)
     for data_point in positive_points:
         text, entity = data_point
         doc = nlp(text)
@@ -91,8 +92,6 @@ def main():
     try:
         nlp = spacy.load(output_dir)
     except:
-        pass
-    finally:
         nlp = spacy.load("en_core_web_sm")
         nlp = train_model(nlp, LABEL, TRAIN_DATA)
         save_model(nlp, output_dir)

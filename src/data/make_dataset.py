@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from random import randint, choice
 import pandas as pd
+import string
 import os
 
 
@@ -30,6 +31,11 @@ def random_date_format(date_obj):
     random_date = date_obj.strftime(random_format)
     return random_date
 
+def remove_punctuation(text, punct_list):
+    for punc in punct_list:
+        if punc in text:
+            text = text.replace(punc, ' ')
+    return text.strip()
 
 def generate_data(row, now_time):
     """Generates appropriate data and inserts them"""
@@ -37,16 +43,33 @@ def generate_data(row, now_time):
     # Randomly chooses a date and a date-time formate
     rand_dt_obj = generate_random_date(now_time, 1, 100)
     rand_dt = random_date_format(rand_dt_obj)
-    article_words = article.lower().split()
+ 
+    # Punctuation
+    regular_punct = list(string.punctuation)
+    other_signs = ['<', '>']
+    punct_list = regular_punct + other_signs
+    article = remove_punctuation(article.lower(), punct_list)
+    
+    article_words = article.split()
     # Randomly chooses a position to insert the date string.
     rand_pos = randint(0, len(article_words))
     article_words.insert(rand_pos, rand_dt)
     # Generates appropriate results
     article = " ".join(article_words)
+    is_deadline = 1
     start = article.index(rand_dt)
-    start = rand_pos
     end = start + len(rand_dt)
     return article, is_deadline, start, end
+
+
+def test_data(articles):
+    final_result = articles[:][articles["Is_Deadline"] == 1]
+    for i in range(len(final_result)):
+        print(
+            final_result.iloc[i]["Article"][
+                final_result.iloc[i]["Start"] : final_result.iloc[i]["End"]
+            ]
+        )
 
 
 def main():
@@ -69,6 +92,8 @@ def main():
         print("Data Processing Done!")
     else:
         print("Data Already Processed!")
+    articles = pd.read_csv("data/processed/Processed_Articles.csv")
+    test_data(articles)
 
 
 if __name__ == "__main__":
