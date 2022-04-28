@@ -6,8 +6,8 @@ pip3 install -r requirements.txt
 python3 -m spacy download en_core_web_sm
 
 python3 src/data/make_dataset.py
-python4 src/models/make_model.py
+python3 src/models/make_model.py
 ```
 
 ## Predicted Date vs Actual Date
-!![image](comparison.png)
+![image](comparison.png)

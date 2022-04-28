@@ -95,7 +95,7 @@ def main():
     finally:
         nlp = spacy.load("en_core_web_sm")
         nlp = train_model(nlp, LABEL, TRAIN_DATA)
-        save_model(nlp)
+        save_model(nlp, output_dir)
     test_model(nlp, TEST_DATA)
 
 
