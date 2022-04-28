@@ -37,7 +37,7 @@ def generate_data(row, now_time):
     # Randomly chooses a date and a date-time formate
     rand_dt_obj = generate_random_date(now_time, 1, 100)
     rand_dt = random_date_format(rand_dt_obj)
-    article_words = article.split()
+    article_words = article.lower().split()
     # Randomly chooses a position to insert the date string.
     rand_pos = randint(0, len(article_words))
     article_words.insert(rand_pos, rand_dt)

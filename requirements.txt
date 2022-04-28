@@ -2,3 +2,4 @@ mypy
 pytest
 black
 pandas
+pip3 install spacy==2.2.4
