@@ -43,7 +43,7 @@ def generate_data(row, now_time):
     article_words.insert(rand_pos, rand_dt)
     # Generates appropriate results
     article = " ".join(article_words)
-    is_deadline = 1
+    start = article.index(rand_dt)
     start = rand_pos
     end = start + len(rand_dt)
     return article, is_deadline, start, end
